@@ -18,7 +18,7 @@ function showSearchResults(bookDetails) {
               150,
             )}<span id="dots_${id}">...</span><span id="more_${id}" class="more">${description.substring(
               150,
-            )}</span><a id="readMore_${id}" class="link">Read More</a>`
+            )}</span> <a id="readMore_${id}" class="link">Read More</a>`
           : description;
 
       // const finalDescription = description;
