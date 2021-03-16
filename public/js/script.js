@@ -3,6 +3,7 @@ function showSearchResults(bookDetails) {
   if (bookDetails.details.length > 0) {
     bookDetails.details.map((bookDetail) => {
       const {
+        id,
         title,
         authors,
         description,
@@ -10,14 +11,17 @@ function showSearchResults(bookDetails) {
         thumbnail,
       } = bookDetail;
 
-      /* const finalDescription = `${description.substring(
-        0,
-        200,
-      )}<span id="dots">...</span><span id="more">${description.substring(
-        200,
-      )}</span>`; */
+      let finalDescription =
+        description.length > 150
+          ? `${description.substring(
+              0,
+              150,
+            )}<span id="dots_${id}">...</span><span id="more_${id}" class="more">${description.substring(
+              150,
+            )}</span><a id="readMore_${id}" class="link">Read More</a>`
+          : description;
 
-      const finalDescription = description;
+      // const finalDescription = description;
 
       // console.log(finalDescription);
 
@@ -64,12 +68,18 @@ function showSearchResults(bookDetails) {
 
       descParagraph.innerHTML = `<strong>Description: </strong>${finalDescription}`;
 
-      /* const readMore = document.createElement('button');
-      readMore.id = 'readMore';
-      readMore.innerHTML = 'Read More';*/
+      /*if (description.length > 200) {
+        const readMore = document.createElement('button');
+        readMore.id = `readMore_${id}`;
+        readMore.innerHTML = 'Read More';
+        readMore.onclick = readMoreDesc.bind(null, id);
+        bookDescriptionDiv.appendChild(descParagraph);
+        bookDescriptionDiv.appendChild(readMore);
+      } else {
+        bookDescriptionDiv.appendChild(descParagraph);
+      }*/
 
       bookDescriptionDiv.appendChild(descParagraph);
-      // bookDescriptionDiv.appendChild(readMore);
 
       bookThumbnailDiv.appendChild(bookThumbnail);
 
@@ -83,6 +93,12 @@ function showSearchResults(bookDetails) {
 
       listEl.appendChild(mainDiv);
       list.appendChild(listEl);
+
+      const readMoreAction = document.getElementById(
+        `readMore_${id}`,
+      );
+      if (readMoreAction)
+        readMoreAction.onclick = readMoreDesc.bind(null, id);
     });
   }
 }
@@ -119,6 +135,8 @@ document
             let title = '';
             let description = '';
 
+            const id = item.id;
+
             if (item.volumeInfo.title) title = item.volumeInfo.title;
             else title = 'NA';
 
@@ -143,6 +161,7 @@ document
               : undefined;
 
             const bookDetail = {
+              id,
               title,
               authors,
               description,
@@ -163,3 +182,22 @@ document
     })();
     document.getElementById('loader').style.display = 'none';
   });
+
+function readMoreDesc(id) {
+  var dots = document.getElementById(`dots_${id}`);
+  var moreText = document.getElementById(`more_${id}`);
+  var btnText = document.getElementById(`readMore_${id}`);
+
+  console.log(id);
+  if (dots) {
+    if (dots.style.display === 'none') {
+      dots.style.display = 'inline';
+      btnText.innerHTML = 'Read more';
+      moreText.style.display = 'none';
+    } else {
+      dots.style.display = 'none';
+      btnText.innerHTML = 'Read less';
+      moreText.style.display = 'inline';
+    }
+  }
+}

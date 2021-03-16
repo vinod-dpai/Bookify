@@ -74,6 +74,16 @@ ul {
   }
 }
 
-#more {
+.more {
   display: none;
+}
+
+.link {
+  color: blue;
+  text-decoration: underline;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+.link:hover {
+  color: #3498db;
 }
