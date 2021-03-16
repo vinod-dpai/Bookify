@@ -29,7 +29,7 @@
     "restartable": "rs",
     "ignore": "node_modules/**/node_modules",
     "env": {
-      "PORT": 46329
+      "PORT": 3000
     }
   }
 }
