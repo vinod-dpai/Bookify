@@ -1,0 +1,165 @@
+function showSearchResults(bookDetails) {
+  document.getElementById('bookList').innerHTML = '';
+  if (bookDetails.details.length > 0) {
+    bookDetails.details.map((bookDetail) => {
+      const {
+        title,
+        authors,
+        description,
+        pointValue,
+        thumbnail,
+      } = bookDetail;
+
+      /* const finalDescription = `${description.substring(
+        0,
+        200,
+      )}<span id="dots">...</span><span id="more">${description.substring(
+        200,
+      )}</span>`; */
+
+      const finalDescription = description;
+
+      // console.log(finalDescription);
+
+      const list = document.getElementById('bookList');
+
+      const listEl = document.createElement('li');
+
+      const bookThumbnail = document.createElement('img');
+      if (thumbnail) bookThumbnail.src = thumbnail;
+      bookThumbnail.alt = 'Book Image';
+      bookThumbnail.height = 200;
+      bookThumbnail.width = 150;
+
+      const mainDiv = document.createElement('div');
+      mainDiv.classList.add('book-main');
+
+      const bookThumbnailDiv = document.createElement('div');
+      bookThumbnailDiv.classList.add('book-thumbnail');
+
+      const bookDetailsDiv = document.createElement('div');
+      bookDetailsDiv.classList.add('book-details');
+
+      const bookTitleDiv = document.createElement('div');
+      bookTitleDiv.classList.add('book-title');
+
+      bookTitleDiv.innerHTML = `<strong>${title}</strong>`;
+
+      const bookAuthorDiv = document.createElement('div');
+      bookAuthorDiv.classList.add('book-author');
+
+      bookAuthorDiv.innerHTML = `Author/s: <strong>${authors}</strong>`;
+
+      const bookPointsDiv = document.createElement('div');
+      bookPointsDiv.classList.add('book-points');
+
+      bookPointsDiv.innerHTML = `<strong>Maximum Points:</strong> ${
+        pointValue || 'NA'
+      }`;
+
+      const bookDescriptionDiv = document.createElement('div');
+      bookDescriptionDiv.classList.add('book-description');
+
+      const descParagraph = document.createElement('p');
+
+      descParagraph.innerHTML = `<strong>Description: </strong>${finalDescription}`;
+
+      /* const readMore = document.createElement('button');
+      readMore.id = 'readMore';
+      readMore.innerHTML = 'Read More';*/
+
+      bookDescriptionDiv.appendChild(descParagraph);
+      // bookDescriptionDiv.appendChild(readMore);
+
+      bookThumbnailDiv.appendChild(bookThumbnail);
+
+      bookDetailsDiv.appendChild(bookTitleDiv);
+      bookDetailsDiv.appendChild(bookAuthorDiv);
+      bookDetailsDiv.appendChild(bookPointsDiv);
+      bookDetailsDiv.appendChild(bookDescriptionDiv);
+
+      mainDiv.appendChild(bookThumbnailDiv);
+      mainDiv.appendChild(bookDetailsDiv);
+
+      listEl.appendChild(mainDiv);
+      list.appendChild(listEl);
+    });
+  }
+}
+
+document
+  .getElementById('searchBook')
+  .addEventListener('keyup', () => {
+    document.getElementById('loader').style.display = 'block';
+    const bookNameToSearch = document.getElementById('searchBook')
+      .value;
+    (async function getBooks() {
+      try {
+        let items = '';
+        if (bookNameToSearch.trim()) {
+          const url = `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookNameToSearch}&maxResults=40&orderBy:relevance`;
+
+          const response = await axios.get(url);
+
+          // console.log(response.data);
+
+          if (response.data.totalItems > 0)
+            items = response.data.items;
+          else items = '';
+        } else {
+          items = '';
+        }
+
+        const bookDetails = { details: [] };
+
+        if (items) {
+          items.map((item) => {
+            let authors = '';
+            let thumbnail = '';
+            let title = '';
+            let description = '';
+
+            if (item.volumeInfo.title) title = item.volumeInfo.title;
+            else title = 'NA';
+
+            if (item.volumeInfo.subtitle)
+              title += `: ${item.volumeInfo.subtitle}`;
+
+            if (item.volumeInfo.description)
+              description = item.volumeInfo.description;
+            else description = 'NA';
+
+            if (item.volumeInfo.authors) {
+              item.volumeInfo.authors.map((author) => {
+                authors += `, ${author}`;
+              });
+              authors = authors.substring(1);
+            } else authors = 'NA';
+
+            thumbnail = item.volumeInfo.imageLinks?.thumbnail;
+
+            const pointValue = item?.saleInfo?.retailPrice?.amount
+              ? Math.floor(item?.saleInfo?.retailPrice?.amount / 2)
+              : undefined;
+
+            const bookDetail = {
+              title,
+              authors,
+              description,
+              pointValue,
+              thumbnail,
+            };
+
+            bookDetails.details.push(bookDetail);
+          });
+        }
+
+        showSearchResults(bookDetails);
+
+        // console.log(bookDetails);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+    document.getElementById('loader').style.display = 'none';
+  });
