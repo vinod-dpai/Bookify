@@ -11,6 +11,7 @@ function showSearchResults(bookDetails) {
         thumbnail,
       } = bookDetail;
 
+      //if (pointValue > 0) {
       let finalDescription =
         description.length > 150
           ? `${description.substring(
@@ -57,9 +58,7 @@ function showSearchResults(bookDetails) {
       const bookPointsDiv = document.createElement('div');
       bookPointsDiv.classList.add('book-points');
 
-      bookPointsDiv.innerHTML = `<strong>Maximum Points:</strong> ${
-        pointValue || 'NA'
-      }`;
+      bookPointsDiv.innerHTML = `<strong>Maximum Points:</strong> ${pointValue}`;
 
       const bookDescriptionDiv = document.createElement('div');
       bookDescriptionDiv.classList.add('book-description');
@@ -69,15 +68,15 @@ function showSearchResults(bookDetails) {
       descParagraph.innerHTML = `<strong>Description: </strong>${finalDescription}`;
 
       /*if (description.length > 200) {
-        const readMore = document.createElement('button');
-        readMore.id = `readMore_${id}`;
-        readMore.innerHTML = 'Read More';
-        readMore.onclick = readMoreDesc.bind(null, id);
-        bookDescriptionDiv.appendChild(descParagraph);
-        bookDescriptionDiv.appendChild(readMore);
-      } else {
-        bookDescriptionDiv.appendChild(descParagraph);
-      }*/
+          const readMore = document.createElement('button');
+          readMore.id = `readMore_${id}`;
+          readMore.innerHTML = 'Read More';
+          readMore.onclick = readMoreDesc.bind(null, id);
+          bookDescriptionDiv.appendChild(descParagraph);
+          bookDescriptionDiv.appendChild(readMore);
+        } else {
+          bookDescriptionDiv.appendChild(descParagraph);
+        }*/
 
       bookDescriptionDiv.appendChild(descParagraph);
 
@@ -99,6 +98,7 @@ function showSearchResults(bookDetails) {
       );
       if (readMoreAction)
         readMoreAction.onclick = readMoreDesc.bind(null, id);
+      //}
     });
   }
 }
@@ -158,7 +158,7 @@ document
 
             const pointValue = item?.saleInfo?.retailPrice?.amount
               ? Math.floor(item?.saleInfo?.retailPrice?.amount / 2)
-              : undefined;
+              : 0;
 
             const bookDetail = {
               id,
@@ -175,7 +175,7 @@ document
 
         showSearchResults(bookDetails);
 
-        // console.log(bookDetails);
+        console.log(bookDetails);
       } catch (err) {
         console.log(err);
       }
@@ -201,3 +201,33 @@ function readMoreDesc(id) {
     }
   }
 }
+document.getElementById('pswd').addEventListener('keyup', () => {
+  const showHidePswd = document.getElementById('showHidePswd');
+  const pswd = document.getElementById('pswd');
+  const login = document.getElementById('login');
+  const lblSignUp = document.getElementById('lblSignUp');
+
+  if (pswd.value.trim() === '') {
+    showHidePswd.style.display = 'none';
+    pswd.style.paddingRight = '0px';
+    lblSignUp.style.fontSize = '0.8em';
+  } else {
+    showHidePswd.style.display = 'inline';
+    pswd.style.paddingRight = '60px';
+    lblSignUp.style.fontSize = '0.6em';
+  }
+});
+document
+  .getElementById('showHidePswd')
+  .addEventListener('click', () => {
+    const showHidePswd = document.getElementById('showHidePswd');
+
+    const pswd = document.getElementById('pswd');
+    if (showHidePswd.innerHTML === 'SHOW') {
+      showHidePswd.innerHTML = 'HIDE';
+      pswd.type = 'text';
+    } else {
+      showHidePswd.innerHTML = 'SHOW';
+      pswd.type = 'password';
+    }
+  });

@@ -1,13 +1,92 @@
 <html>
   <head>
     <title>Bookify</title>
+
     <link rel="stylesheet" href="public/css/main.css" />
   </head>
   <body>
-    <h1>Bookify</h1>
+    <div class="header">
+      .
+      <div class="float-container">
+        <div id="logoDiv" class="float-child">
+          <img
+            id="logo"
+            height="100"
+            src="./public/images/BookifyLogo.svg"
+          />
+        </div>
+        <div id="login" class="float-child">
+          <table id="loginTable">
+            <tr>
+              <td>
+                <input
+                  id="username"
+                  placeholder="Enter Email ID"
+                /><span id="showHidePswd">SHOW</span>
+              </td>
+              <td>
+                <input
+                  type="password"
+                  id="pswd"
+                  placeholder="Enter Password"
+                />
+              </td>
+              <td><button id="loginButton">Login</button></td>
+              <td>
+                <img
+                  id="googleLogin"
+                  width="25"
+                  height="25"
+                  src="./public/images/google.png"
+                />
+              </td>
+              <td>
+                <img
+                  id="googleLogin"
+                  width="25"
+                  height="25"
+                  src="./public/images/google.png"
+                />
+              </td>
+              <td>
+                <img
+                  id="googleLogin"
+                  width="25"
+                  height="25"
+                  src="./public/images/google.png"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  value="Remember
+            Me"
+                /><label id="lblRememberMe" for="rememberMe"
+                  >Remember Me</label
+                >
+              </td>
+              <td>
+                <a href="#" id="forgotPassword">Forgot Password?</a>
+              </td>
+              <td colspan="4">
+                <label id="lblSignUp">Don't have an Account?</label>
+                <a id="signUp" href="#">Sign Up</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <div id="main">
       <div id="searchDiv">
-        <input id="searchBook" placeholder="Enter Book Name" />
+        <input
+          id="searchBook"
+          placeholder="Enter Book Name To Search"
+        />
         <!--<button id="search">Search</button>-->
       </div>
       <div id="loader"></div>
@@ -16,6 +95,6 @@
       </div>
     </div>
   </body>
-  <script src="public/js/axios.min.js"></script>
+  <script src="public/js/axios.js"></script>
   <script src="public/js/script.js"></script>
 </html>

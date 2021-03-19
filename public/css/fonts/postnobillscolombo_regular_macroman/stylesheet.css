@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'post_no_bills_colomboregular';
+  src: url('postnobillscolombo-regular-webfont.eot');
+  src: url('postnobillscolombo-regular-webfont.eot?#iefix')
+      format('embedded-opentype'),
+    url('postnobillscolombo-regular-webfont.woff') format('woff'),
+    url('postnobillscolombo-regular-webfont.ttf') format('truetype'),
+    url('postnobillscolombo-regular-webfont.svg#post_no_bills_colomboregular')
+      format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
